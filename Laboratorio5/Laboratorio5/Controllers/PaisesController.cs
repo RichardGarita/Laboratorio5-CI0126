@@ -1,4 +1,5 @@
 ﻿using Laboratorio5.Handlers;
+using Laboratorio5.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Laboratorio5.Controllers
@@ -11,6 +12,36 @@ namespace Laboratorio5.Controllers
             var paises = paisesHandler.ObtenerPaises();
             ViewBag.MainTitle = "Lista de Países";
             return View(paises);
+        }
+
+        [HttpGet]
+        public ActionResult CrearPais ()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CrearPais (PaisModel pais) {
+            ViewBag.ExitoAlCrear = false;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    PaisesHandler paisesHandler = new PaisesHandler();
+                    ViewBag.ExitoAlCrear = paisesHandler.CrearPais(pais);
+
+                    if (ViewBag.ExitoAlCrear == true)
+                    {
+                        ViewBag.Message = "El pais" + " " + pais.Nombre + " fue creado con éxito";
+                        ModelState.Clear();
+                    }
+                }
+                return View();
+            } catch
+            {
+                ViewBag.Message = "Algo salió mal y no fue posible crear el país";
+                return View();
+            }
         }
     }
 }
