@@ -1,6 +1,7 @@
 ﻿using Laboratorio5.Handlers;
 using Laboratorio5.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Laboratorio5.Controllers
 {
@@ -40,6 +41,47 @@ namespace Laboratorio5.Controllers
             } catch
             {
                 ViewBag.Message = "Algo salió mal y no fue posible crear el país";
+                return View();
+            }
+        }
+
+
+
+        [HttpGet]
+        public ActionResult EditarPais(int identificador)
+        {
+            ActionResult vista;
+            try
+            {
+                var paisesHandler = new PaisesHandler();
+                var pais = paisesHandler.ObtenerPaises().Find(model => model.Id == identificador);
+                if (pais == null)
+                {
+                    vista = RedirectToAction("Index");
+                }
+                else
+                {
+                    vista = View(pais);
+                }
+            }
+            catch
+            {
+                vista = RedirectToAction("Index");
+            }
+            return vista;
+        }
+
+        [HttpPost]
+        public ActionResult EditarPais(PaisModel pais)
+        {
+            try 
+            {
+                var paisesHandler = new PaisesHandler(); paisesHandler.EditarPais(pais);
+                return RedirectToAction("Index", "Paises");
+            }
+            
+            catch
+            {
                 return View();
             }
         }
