@@ -19,5 +19,6 @@ namespace Laboratorio5.Models
         [DisplayName("Idioma: ")]
         [RegularExpression("^[a-zA-Z]+$", ErrorMessage ="No puede ingresar números")]
         public string Idioma { get; set; }
+
     }
 }
